@@ -1,4 +1,4 @@
-﻿// js/storage.js
+// js/storage.js
 // 保存已抽列表到 localStorage
 function saveDrawn(boxId, drawnArray) {
     localStorage.setItem(`drawn_${boxId}`, JSON.stringify(drawnArray));

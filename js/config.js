@@ -1,4 +1,4 @@
-﻿// js/config.js
+// js/config.js
 // 盒子配置数据
 const BOXES = [
     {

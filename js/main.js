@@ -1,4 +1,4 @@
-﻿// js/main.js
+// js/main.js
 // 等待 DOM 加载完成再执行
 document.addEventListener('DOMContentLoaded', () => {
     // 获取页面元素
