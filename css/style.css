@@ -1,4 +1,3 @@
-/* 全局样式 */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,43 +5,119 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #1a1a2e;
-    color: #e0e0e0;
+    font-family: 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+    font-weight: 300; /* 细体 */
+    background-color: #000000;
+    color: #ffffff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    line-height: 1.5;
 }
 
+/* 页面容器 */
 .page {
     width: 100%;
     max-width: 1200px;
-    background: #16213e;
-    border-radius: 20px;
+    background-color: #0a0a0a;
+    border: 1px solid #4a9eff;
+    border-radius: 0;
     padding: 30px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: none; /* 默认隐藏，由JS控制 */
+}
+
+/* 预算页面 */
+#budget-page {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+    #budget-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+        font-weight: 300;
+        color: #ffffff;
+        border-bottom: 1px solid #4a9eff;
+        padding-bottom: 1rem;
+    }
+
+    #budget-page p {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: #cccccc;
+    }
+
+    #budget-page input {
+        width: 300px;
+        padding: 12px;
+        background: #111111;
+        border: 1px solid #4a9eff;
+        color: white;
+        font-size: 1.2rem;
+        font-family: inherit;
+        font-weight: 300;
+        margin-bottom: 2rem;
+        text-align: center;
+        border-radius: 0;
+    }
+
+        #budget-page input:focus {
+            outline: none;
+            border-color: #66ccff;
+            background: #1a1a1a;
+        }
+
+    #budget-page button {
+        background: transparent;
+        color: #4a9eff;
+        border: 1px solid #4a9eff;
+        padding: 12px 40px;
+        font-size: 1.2rem;
+        font-family: inherit;
+        font-weight: 300;
+        cursor: pointer;
+        transition: 0.2s;
+        border-radius: 0;
+    }
+
+        #budget-page button:hover {
+            background: #4a9eff;
+            color: #000000;
+        }
+
+/* 商店页面布局 */
+#shop-page {
+    display: none; /* 初始隐藏 */
+    flex-direction: row;
     gap: 30px;
 }
 
-/* 左右面板 */
 .left-panel {
     flex: 1;
-    border-right: 1px solid #0f3460;
+    border-right: 1px solid #333333; 
     padding-right: 30px;
 }
 
 .right-panel {
     flex: 1;
-    padding-left: 10px;
 }
 
 /* 标题 */
 h1, h2 {
-    color: #e94560;
+    font-weight: 300;
+    color: #ffffff;
     margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    border-left: 3px solid #4a9eff;
+    padding-left: 10px;
 }
 
 /* 盒选择器 */
@@ -50,105 +125,116 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
+    .box-selector label {
+        color: #cccccc;
+        margin-right: 10px;
+    }
+
     .box-selector select {
-        background: #0f3460;
+        background: #111111;
         color: white;
-        border: 1px solid #e94560;
+        border: 1px solid #4a9eff;
         padding: 8px 12px;
-        border-radius: 8px;
+        font-family: inherit;
+        font-weight: 300;
         font-size: 16px;
+        border-radius: 0;
         cursor: pointer;
     }
+
+        .box-selector select:focus {
+            outline: none;
+            border-color: #66ccff;
+        }
 
 /* 盒信息 */
 .box-info p {
     font-size: 18px;
     margin: 10px 0;
+    color: #cccccc;
 }
 
 .box-info span {
-    font-weight: bold;
-    color: #e94560;
+    color: #4a9eff;
+    font-weight: 400;
+    margin-left: 5px;
 }
 
 /* 按钮 */
 button {
-    background: #e94560;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 18px;
-    border-radius: 30px;
+    background: transparent;
+    color: #4a9eff;
+    border: 1px solid #4a9eff;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: inherit;
+    font-weight: 300;
     cursor: pointer;
-    transition: 0.3s;
-    margin: 10px 10px 10px 0;
-    border: 1px solid transparent;
+    transition: 0.2s;
+    margin: 5px 10px 5px 0;
+    border-radius: 0;
 }
 
     button:hover {
-        background: #ff6b8b;
-        transform: scale(1.05);
-    }
-
-    button:active {
-        transform: scale(0.95);
+        background: #4a9eff;
+        color: #000000;
     }
 
 #new-box-btn {
-    background: #0f3460;
+    border-color: #666666;
+    color: #cccccc;
 }
 
     #new-box-btn:hover {
-        background: #1a4a7a;
+        background: #666666;
+        color: #ffffff;
     }
 
 /* 预算显示 */
 .budget-info {
     margin-top: 20px;
-    font-size: 20px;
-    background: #0f3460;
-    padding: 15px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-/* 负数预算 */
-.budget-negative {
-    color: #ff4444 !important; /* 亮红色 */
-    font-weight: bold;
+    font-size: 18px;
+    border-top: 1px solid #333333;
+    padding-top: 15px;
 }
 
 #budget-amount {
-    font-weight: bold;
-    color: #00d4ff;
+    color: #4a9eff;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.budget-negative {
+    color: #ff6666 !important;
 }
 
 /* 背包容器 */
 #drawn-container {
-    background: #0f3460;
-    border-radius: 15px;
-    padding: 20px;
+    background: #111111;
+    border: 1px solid #333333;
+    padding: 15px;
     min-height: 400px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     align-content: flex-start;
 }
 
-/* 通行证卡片（后续JS动态添加时会用到这个类） */
+/* 通行证卡片 */
 .pass-card {
-    background: #16213e;
-    border: 2px solid #e94560;
-    border-radius: 10px;
-    padding: 10px;
-    width: calc(20% - 8px);
+    background: #1a1a1a;
+    border: 1px solid #4a9eff;
+    padding: 8px;
+    width: calc(20% - 7px);
     text-align: center;
     font-size: 14px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: 0.2s;
+    color: #dddddd;
+    transition: 0.1s;
+    border-radius: 0;
 }
 
     .pass-card:hover {
-        transform: translateY(-5px);
-        border-color: #ff6b8b;
+        border-color: #66ccff;
+        color: #ffffff;
+        background: #222222;
     }
