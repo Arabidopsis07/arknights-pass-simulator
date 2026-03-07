@@ -15,32 +15,38 @@
         <input type="number" id="budget-input" placeholder="输入预算" min="0" value="100">
         <button id="enter-shop">进入商店</button>
     </div>
+
     <!-- 主界面（商店页面），初始隐藏 -->
     <div id="shop-page" class="page" style="display: none;">
+
         <!-- 左侧区域：盒选择和抽卡 -->
         <div class="left-panel">
             <h1>来一发通行证吧！</h1>
 
-            <!-- 盒选择器（以后扩展多盒） -->
-            <div class="box-selector">
-                <label for="box-select">选择盒：</label>
-                <select id="box-select">
-                </select>
+            <!-- 盒子选择视图（显示所有盒子方块） -->
+            <div id="box-select-view" class="view">
+                <div id="box-grid" class="grid-container">
+                    <!-- 动态生成的盒子方块会放在这里 -->
+                </div>
             </div>
 
-            <!-- 当前盒信息 -->
-            <div class="box-info">
-                <p>当前盒：<span id="box-name">49</span></p>
-                <p>剩余数量：<span id="remaining-count">14</span> / 14</p>
+            <!-- 抽盒视图（显示当前盒的14个小方块，初始隐藏） -->
+            <div id="box-detail-view" class="view" style="display: none;">
+                <div class="detail-header">
+                    <button id="back-to-boxes" class="back-btn">←</button>
+                    <span id="detail-box-name" class="detail-box-name"></span>
+                </div>
+                <div id="item-grid" class="grid-container">
+                    <!-- 14个小方块动态生成 -->
+                </div>
+                <div class="action-area">
+                    <button id="draw-btn">抽一个 (消耗25)</button>
+                    <div id="budget-warning" class="warning-text"></div>
+                    <button id="new-box-btn" style="margin-top: 10px;">开新盒</button>
+                </div>
             </div>
 
-            <!-- 抽卡按钮 -->
-            <button id="draw-btn">抽一个 (消耗25)</button>
-
-            <!-- 重置按钮：重置抽新盒但已抽不清空 -->
-            <button id="new-box-btn">开新盒</button>
-
-            <!-- 预算显示 -->
+            <!-- 预算显示（公共区域） -->
             <div class="budget-info">
                 剩余预算：<span id="budget-amount">0</span>
             </div>

@@ -1,32 +1,32 @@
-// js/main.js
-// 等待 DOM 加载完成再执行
 document.addEventListener('DOMContentLoaded', () => {
     // 获取页面元素
-    const boxSelect = document.getElementById('box-select');          // 下拉框
-    const boxNameSpan = document.getElementById('box-name');          // 盒子名称显示
-    const remainingSpan = document.getElementById('remaining-count'); // 剩余数量
-    const drawBtn = document.getElementById('draw-btn');              // 抽卡按钮
-    const newBoxBtn = document.getElementById('new-box-btn');         // 新开一盒按钮
-    const drawnContainer = document.getElementById('drawn-container');// 背包容器
-    const budgetSpan = document.getElementById('budget-amount');      // 预算显示
-
-    // 全局背包：存储所有抽到的物品（永久保存）
-    let globalBackpack = loadBackpack() || [];   // 从 localStorage 加载
-    // 预算相关变量
-    let totalBudget = 0;        // 输入的初始预算
-    let remainingBudget = 0;    // 剩余预算
-    // 状态变量
-    let currentBoxId = BOXES[0]?.id;
-    let currentBox = BOXES.find(b => b.id === currentBoxId);
-    let drawnItems = [];                         // 当前盒已抽列表
-    
-    // 获取预算页面元素
     const budgetPage = document.getElementById('budget-page');
     const shopPage = document.getElementById('shop-page');
     const budgetInput = document.getElementById('budget-input');
     const enterShopBtn = document.getElementById('enter-shop');
+    const budgetSpan = document.getElementById('budget-amount');
+    const drawnContainer = document.getElementById('drawn-container');
 
-    // 进入商店按钮点击事件
+    // 视图容器
+    const boxSelectView = document.getElementById('box-select-view');
+    const boxDetailView = document.getElementById('box-detail-view');
+    const boxGrid = document.getElementById('box-grid');
+    const itemGrid = document.getElementById('item-grid');
+    const backBtn = document.getElementById('back-to-boxes');
+    const detailBoxName = document.getElementById('detail-box-name');
+    const drawBtn = document.getElementById('draw-btn');
+    const newBoxBtn = document.getElementById('new-box-btn');
+    const budgetWarning = document.getElementById('budget-warning');
+
+    // 全局变量
+    let globalBackpack = loadBackpack() || [];
+    let totalBudget = 0;
+    let remainingBudget = 0;
+    let currentBoxId = BOXES[0]?.id;
+    let currentBox = BOXES.find(b => b.id === currentBoxId);
+    let drawnItems = [];   // 当前盒已抽列表
+
+    // 初始化预算页面进入商店
     enterShopBtn.addEventListener('click', () => {
         const budget = parseFloat(budgetInput.value);
         if (isNaN(budget) || budget < 0) {
@@ -36,77 +36,112 @@ document.addEventListener('DOMContentLoaded', () => {
         totalBudget = budget;
         remainingBudget = budget;
 
-        // 切换页面
         budgetPage.style.display = 'none';
         shopPage.style.display = 'flex';
 
-        // 更新预算显示
         updateBudgetDisplay();
-
-        // 初始化商店数据
-        if (typeof init === 'function') init();
+        // 初始化视图
+        renderBoxGrid();
+        // 默认显示选盒视图
+        showBoxSelectView();
     });
 
-    // 初始化函数：填充下拉框并设置当前盒子
-    function init() {
-        boxSelect.innerHTML = '';
-        // 清空防止重复调用
-
-        // 填充下拉选项
-        BOXES.forEach(box => {
-            const option = document.createElement('option');
-            option.value = box.id;
-            option.textContent = box.name;
-            boxSelect.appendChild(option);
-        });
-        // 设置当前盒子
-        switchBox(currentBoxId);
+    // 视图切换函数
+    function showBoxSelectView() {
+        boxSelectView.style.display = 'block';
+        boxDetailView.style.display = 'none';
+    }
+    function showBoxDetailView() {
+        boxSelectView.style.display = 'none';
+        boxDetailView.style.display = 'block';
     }
 
-    // 切换盒子的函数
-    function switchBox(boxId) {
-        console.log('切换到盒子 ID:', boxId);
-        console.log('找到的盒子:', BOXES.find(b => b.id === boxId));
+    // 渲染所有盒子盒子（选盒界面）
+    function renderBoxGrid() {
+        boxGrid.innerHTML = '';  // 清空
+        BOXES.forEach(box => {
+            const tile = document.createElement('div');
+            tile.className = 'box-tile';
+            tile.style.backgroundColor = box.themeColor || '#4a9eff';
+            tile.textContent = box.name;  // 左上角显示盒名
+            tile.dataset.boxId = box.id;
+            tile.addEventListener('click', () => {
+                // 切换到该盒子的抽盒视图
+                switchToBox(box.id);
+            });
+            boxGrid.appendChild(tile);
+        });
+    }
+
+    // 切换到指定盒子的抽盒视图
+    function switchToBox(boxId) {
         currentBoxId = boxId;
         currentBox = BOXES.find(b => b.id === boxId);
-        // 加载该盒子的已抽记录
-        drawnItems = loadDrawn(boxId);
-        // 更新界面
-        updateUI();
+        drawnItems = loadDrawn(boxId) || [];  // 加载该盒已抽记录
+        detailBoxName.textContent = currentBox.name;
+        renderItemGrid();
+        showBoxDetailView();
     }
 
-    function updateBudgetDisplay() {
-        budgetSpan.textContent = remainingBudget;
-        // 负数时添加红色样式
-        if (remainingBudget < 0) {
-            budgetSpan.classList.add('budget-negative');
-        } else {
-            budgetSpan.classList.remove('budget-negative');
+    // 渲染当前盒子的14个小盒子（抽盒界面）
+    function renderItemGrid() {
+        itemGrid.innerHTML = '';
+        if (!currentBox) return;
+
+        // 生成盒子（根据items数量）
+        for (let i = 0; i < currentBox.items.length; i++) {
+            const itemName = currentBox.items[i];
+            const tile = document.createElement('div');
+            tile.className = 'item-tile';
+            // 根据是否已抽设置样式
+            if (drawnItems.includes(itemName)) {
+                tile.classList.add('drawn');
+            } else {
+                tile.style.backgroundColor = currentBox.themeColor || '#4a9eff';
+            }
+            tile.dataset.item = itemName;
+            tile.dataset.index = i;
+            tile.addEventListener('click', (e) => {
+                // 只有未抽的盒子才触发抽卡
+                if (!tile.classList.contains('drawn')) {
+                    drawOne(itemName);
+                }
+            });
+            itemGrid.appendChild(tile);
         }
     }
 
-    // 更新界面：显示盒子名称、剩余数量、背包列表
-    function updateUI() {
-        // 更新名称和剩余数量
-        boxNameSpan.textContent = currentBox.name;
-        const remaining = currentBox.items.length - drawnItems.length;
-        remainingSpan.textContent = remaining;
+    // 抽卡逻辑（传入物品名，因为点击时已经知道是哪个）
+    function drawOne(itemName) {
+        // 预算扣减
+        remainingBudget -= 25;
+        updateBudgetDisplay();
 
-        // 渲染背包
-        renderDrawnItems();
+        // 检查预算并显示警告
+        if (remainingBudget < 0) {
+            budgetWarning.textContent = '预算不足';
+        } else {
+            budgetWarning.textContent = '';
+        }
+
+        // 将该物品加入已抽列表和全局背包
+        drawnItems.push(itemName);
+        globalBackpack.push(itemName);
+
+        // 保存
+        saveDrawn(currentBoxId, drawnItems);
+        saveBackpack(globalBackpack);
+
+        // 更新UI：重新渲染小盒子（更新空状态）和背包
+        renderItemGrid();
+        renderBackpack();
+
+        // 显示抽卡弹窗
+        showToast(`你抽到了：${itemName}`);
     }
 
-    // 保存/加载背包函数
-    function saveBackpack(backpack) {
-        localStorage.setItem('globalBackpack', JSON.stringify(backpack));
-    }
-    function loadBackpack() {
-        const saved = localStorage.getItem('globalBackpack');
-        return saved ? JSON.parse(saved) : [];
-    }
-
-    // 渲染已抽物品到背包
-    function renderDrawnItems() {
+    // 渲染背包（基于全局背包）
+    function renderBackpack() {
         if (globalBackpack.length === 0) {
             drawnContainer.innerHTML = '<p>暂无通行证</p>';
             return;
@@ -117,57 +152,73 @@ document.addEventListener('DOMContentLoaded', () => {
         drawnContainer.innerHTML = cardsHTML;
     }
 
-    // 抽卡逻辑（不放回）
-    function drawOne() {
-        // 预算扣减（可为负）
-        remainingBudget -= 25;
-        updateBudgetDisplay();
-
-        // 如果预算为负，给出提示（不影响抽卡）
+    // 更新预算显示和警告
+    function updateBudgetDisplay() {
+        budgetSpan.textContent = remainingBudget;
         if (remainingBudget < 0) {
-            alert('先吃饭后吃谷！');
+            budgetSpan.classList.add('budget-negative');
+        } else {
+            budgetSpan.classList.remove('budget-negative');
         }
-        // 计算可抽物品：在总物品中但不在已抽列表中的
-        const available = currentBox.items.filter(item => !drawnItems.includes(item));
-        if (available.length === 0) {
-            alert('这盒已经集齐啦！');
-            return null;
-        }
-        // 随机抽取一个
-        const randomIndex = Math.floor(Math.random() * available.length);
-        const drawnItem = available[randomIndex];
-        // 加入已抽列表
-        drawnItems.push(drawnItem);
-        // 加入全局背包
-        globalBackpack.push(drawnItem);
-        saveBackpack(globalBackpack);
-        // 保存到 localStorage
-        saveDrawn(currentBoxId, drawnItems);
-        // 更新界面
-        updateUI();
-        // 弹出提示（后续替换为动画）
-        alert(`你抽到了：${drawnItem}`);
-        return drawnItem;
     }
 
-    // 重置当前盒子
+    // 开新盒按钮：重置当前盒的已抽记录，但不影响全局背包
     function resetCurrentBox() {
-        if (confirm('确定要新开一盒吗？当前盒子的已抽记录将清空。')) {
+        if (confirm('还要继续读博吗🥺')) {
             drawnItems = [];
-            // 清除存储
             clearDrawn(currentBoxId);
-            // 更新界面
-            updateUI();
+            renderItemGrid();  // 重新渲染小盒子（全部变实心）
         }
     }
 
-    // 绑定事件
-    drawBtn.addEventListener('click', drawOne);
-    newBoxBtn.addEventListener('click', resetCurrentBox);
-    boxSelect.addEventListener('change', (e) => {
-        switchBox(e.target.value);
+    // 返回按钮：回到选盒视图
+    backBtn.addEventListener('click', () => {
+        showBoxSelectView();
     });
 
-    // 启动初始化
-    init();
+    drawBtn.style.display = 'none';  // 隐藏原来的按钮，因为现在用盒子抽卡
+
+    // 新盒按钮绑定事件
+    newBoxBtn.addEventListener('click', resetCurrentBox);
+
+    // 初始化时渲染背包
+    renderBackpack();
+
+    // 辅助函数：保存/加载背包
+    function saveBackpack(backpack) {
+        localStorage.setItem('globalBackpack', JSON.stringify(backpack));
+    }
+    function loadBackpack() {
+        const saved = localStorage.getItem('globalBackpack');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    // 弹窗显示
+    function showToast(message) {
+        // 如果页面上还没有toast元素，先创建
+        let toast = document.getElementById('draw-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'draw-toast';
+            toast.style.position = 'fixed';
+            toast.style.top = '50%';
+            toast.style.left = '50%';
+            toast.style.transform = 'translate(-50%, -50%)';
+            toast.style.backgroundColor = '#4a9eff';
+            toast.style.color = 'white';
+            toast.style.padding = '20px 40px';
+            toast.style.borderRadius = '8px';
+            toast.style.fontSize = '24px';
+            toast.style.zIndex = '1000';
+            toast.style.boxShadow = '0 0 20px rgba(74,158,255,0.5)';
+            toast.style.transition = 'opacity 0.3s';
+            toast.style.opacity = '0';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+        }, 2000);
+    }
 });
