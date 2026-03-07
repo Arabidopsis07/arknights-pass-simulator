@@ -1,12 +1,14 @@
+/* 全局重置 */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* 主体样式 */
 body {
     font-family: 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
-    font-weight: 300; /* 细体 */
+    font-weight: 300;
     background-color: #000000;
     color: #ffffff;
     min-height: 100vh;
@@ -17,15 +19,14 @@ body {
     line-height: 1.5;
 }
 
-/* 页面容器 */
+/* 页面容器（预算页和商店页共用） */
 .page {
     width: 100%;
     max-width: 1200px;
     background-color: #0a0a0a;
     border: 1px solid #4a9eff;
-    border-radius: 0;
     padding: 30px;
-    display: none; /* 默认隐藏，由JS控制 */
+    display: none; /* 默认隐藏，由JS控制显示哪个页面 */
 }
 
 /* 预算页面 */
@@ -63,7 +64,6 @@ body {
         font-weight: 300;
         margin-bottom: 2rem;
         text-align: center;
-        border-radius: 0;
     }
 
         #budget-page input:focus {
@@ -82,7 +82,6 @@ body {
         font-weight: 300;
         cursor: pointer;
         transition: 0.2s;
-        border-radius: 0;
     }
 
         #budget-page button:hover {
@@ -90,7 +89,7 @@ body {
             color: #000000;
         }
 
-/* 商店页面布局 */
+/* 商店页面（左右分栏） */
 #shop-page {
     display: none; /* 初始隐藏 */
     flex-direction: row;
@@ -99,7 +98,7 @@ body {
 
 .left-panel {
     flex: 1;
-    border-right: 1px solid #333333; 
+    border-right: 1px solid #333333;
     padding-right: 30px;
 }
 
@@ -107,7 +106,7 @@ body {
     flex: 1;
 }
 
-/* 标题 */
+/* 标题通用样式 */
 h1, h2 {
     font-weight: 300;
     color: #ffffff;
@@ -120,47 +119,7 @@ h2 {
     padding-left: 10px;
 }
 
-/* 盒选择器 */
-.box-selector {
-    margin-bottom: 20px;
-}
-
-    .box-selector label {
-        color: #cccccc;
-        margin-right: 10px;
-    }
-
-    .box-selector select {
-        background: #111111;
-        color: white;
-        border: 1px solid #4a9eff;
-        padding: 8px 12px;
-        font-family: inherit;
-        font-weight: 300;
-        font-size: 16px;
-        border-radius: 0;
-        cursor: pointer;
-    }
-
-        .box-selector select:focus {
-            outline: none;
-            border-color: #66ccff;
-        }
-
-/* 盒信息 */
-.box-info p {
-    font-size: 18px;
-    margin: 10px 0;
-    color: #cccccc;
-}
-
-.box-info span {
-    color: #4a9eff;
-    font-weight: 400;
-    margin-left: 5px;
-}
-
-/* 按钮 */
+/* 按钮通用样式 */
 button {
     background: transparent;
     color: #4a9eff;
@@ -180,6 +139,7 @@ button {
         color: #000000;
     }
 
+/* 新开盒按钮特殊样式 */
 #new-box-btn {
     border-color: #666666;
     color: #cccccc;
@@ -190,7 +150,7 @@ button {
         color: #ffffff;
     }
 
-/* 预算显示 */
+/* 预算显示区域 */
 .budget-info {
     margin-top: 20px;
     font-size: 18px;
@@ -204,11 +164,12 @@ button {
     margin-left: 5px;
 }
 
+/* 预算为负时的样式 */
 .budget-negative {
     color: #ff6666 !important;
 }
 
-/* 背包容器 */
+/* 背包容器（右侧） */
 #drawn-container {
     background: #111111;
     border: 1px solid #333333;
@@ -220,7 +181,7 @@ button {
     align-content: flex-start;
 }
 
-/* 通行证卡片 */
+/* 背包卡片 */
 .pass-card {
     background: #1a1a1a;
     border: 1px solid #4a9eff;
@@ -230,7 +191,6 @@ button {
     font-size: 14px;
     color: #dddddd;
     transition: 0.1s;
-    border-radius: 0;
 }
 
     .pass-card:hover {
@@ -239,12 +199,12 @@ button {
         background: #222222;
     }
 
-/* 视图切换 */
+/* 视图容器（选盒视图和抽盒视图） */
 .view {
     width: 100%;
 }
 
-/* 网格容器：用于放置方块 */
+/* 网格布局（用于放置方块） */
 .grid-container {
     display: flex;
     flex-wrap: wrap;
@@ -252,15 +212,15 @@ button {
     margin: 20px 0;
 }
 
-/* 盒子方块（选盒界面） */
+/* 选盒界面的盒子方块 */
 .box-tile {
-    width: calc(33.33% - 7px); /* 一行三个 */
+    width: calc(20% - 7px);
     aspect-ratio: 1 / 1; /* 正方形 */
     background-color: #4a9eff; /* 默认颜色，会被JS内联覆盖 */
     border: 2px solid #ffffff;
     border-radius: 8px;
     display: flex;
-    align-items: flex-start; /* 左上角 */
+    align-items: flex-start; /* 文字左上角 */
     justify-content: flex-start;
     padding: 5px;
     color: white;
@@ -269,6 +229,10 @@ button {
     cursor: pointer;
     transition: 0.2s;
     box-sizing: border-box;
+    /* 新增字号设置：根据视口动态调整，最大3rem */
+    font-size: min(4vw, 3rem);
+    line-height: 1.2;
+    word-break: break-word; /* 长盒名换行 */
 }
 
     .box-tile:hover {
@@ -276,7 +240,7 @@ button {
         border-color: #4a9eff;
     }
 
-/* 抽盒小方块（14个） */
+/* 抽盒界面的小方块（常规14个） */
 .item-tile {
     width: calc(14.28% - 9px); /* 一行7个，留出间隙 */
     aspect-ratio: 3 / 1; /* 长宽比3:1 */
@@ -288,17 +252,20 @@ button {
     position: relative;
 }
 
+    /* 已抽小方块：空心虚线 */
     .item-tile.drawn {
-        background-color: transparent; /* 空心 */
-        border: 2px dashed #4a9eff; /* 虚线边框 */
+        background-color: transparent;
+        border: 2px dashed #4a9eff;
         opacity: 0.8;
     }
 
+    /* 未抽方块悬停效果 */
     .item-tile:not(.drawn):hover {
         transform: scale(1.05);
         border-color: #ffd700;
     }
-    /* 撕拉虚线装饰 */
+
+    /* 撕拉虚线装饰（模拟通行证表面花纹） */
     .item-tile::before {
         content: '';
         position: absolute;
@@ -315,7 +282,7 @@ button {
         border-color: #4a9eff;
     }
 
-/* 抽盒视图头部 */
+/* 抽盒视图头部（返回按钮+盒名） */
 .detail-header {
     display: flex;
     align-items: center;
@@ -350,7 +317,7 @@ button {
     min-height: 20px;
 }
 
-/* 调整按钮区域 */
+/* 抽盒视图按钮区域 */
 .action-area {
     margin-top: 20px;
 }

@@ -4,7 +4,7 @@ const BOXES = [
     {
         id: 'box31',
         name: '#31',
-        themeColor: '#dd7b8b',   // 粉色
+        themeColor: '#d6ecf0',   // 浅蓝
         items: [
             '假日威龙陈精一', '假日威龙陈精二', '水月精一', '水月精二',
             '龙舌兰精一', '龙舌兰精二', '羽毛笔精一', '羽毛笔精二',
@@ -14,7 +14,7 @@ const BOXES = [
     {
         id: 'box49',
         name: '#49',
-        themeColor: '#d6ecf0',   // 浅蓝
+        themeColor: '#dd7b8b',   // 粉色
         items: [
             '酒神精一', '酒神精二', 'Miss.Christine精一', 'Miss.Christine精二',
             '蒂比精一', '蒂比精二', '司霆惊蛰精一', '司霆惊蛰精二',
