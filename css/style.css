@@ -229,7 +229,7 @@ button {
     cursor: pointer;
     transition: 0.2s;
     box-sizing: border-box;
-    font-size: 2.0rem; /* 固定字号 */
+    font-size: 1.5rem; /* 固定字号 */
     line-height: 1; /* 防止多行文字撑高 */
     padding: 10px; /* 增加内边距让文字更靠边（左上角） */
     word-break: keep-all; /* 防止中文换行 */
