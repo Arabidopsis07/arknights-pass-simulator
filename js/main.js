@@ -8,13 +8,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawBtn = document.getElementById('draw-btn');              // 抽卡按钮
     const newBoxBtn = document.getElementById('new-box-btn');         // 新开一盒按钮
     const drawnContainer = document.getElementById('drawn-container');// 背包容器
-    const budgetSpan = document.getElementById('budget-amount');      // 预算显示（暂未使用）
+    const budgetSpan = document.getElementById('budget-amount');      // 预算显示
 
-    // 状态变量
+    // 预算相关变量
+    let totalBudget = 0;        // 输入的初始预算
+    let remainingBudget = 0;    // 剩余预算
     // 状态变量
     let currentBoxId = BOXES[0]?.id;                    // 取第一个盒子的 id
     let currentBox = BOXES.find(b => b.id === currentBoxId); // 当前盒子对象
     let drawnItems = [];                         // 当前盒子已抽到的物品列表
+
+    // 获取预算页面元素
+    const budgetPage = document.getElementById('budget-page');
+    const shopPage = document.getElementById('shop-page');
+    const budgetInput = document.getElementById('budget-input');
+    const enterShopBtn = document.getElementById('enter-shop');
+
+    // 进入商店按钮点击事件
+    enterShopBtn.addEventListener('click', () => {
+        const budget = parseFloat(budgetInput.value);
+        if (isNaN(budget) || budget < 0) {
+            alert('请输入有效的预算😡');
+            return;
+        }
+        totalBudget = budget;
+        remainingBudget = budget;
+
+        // 切换页面
+        budgetPage.style.display = 'none';
+        shopPage.style.display = 'flex';
+
+        // 更新预算显示
+        updateBudgetDisplay();
+
+        // 初始化商店数据（如果尚未初始化）
+        if (typeof init === 'function') init();
+    });
 
     // 初始化函数：填充下拉框并设置当前盒子
     function init() {
@@ -37,6 +66,16 @@ document.addEventListener('DOMContentLoaded', () => {
         drawnItems = loadDrawn(boxId);
         // 更新界面
         updateUI();
+    }
+
+    function updateBudgetDisplay() {
+        budgetSpan.textContent = remainingBudget;
+        // 负数时添加红色样式
+        if (remainingBudget < 0) {
+            budgetSpan.classList.add('budget-negative');
+        } else {
+            budgetSpan.classList.remove('budget-negative');
+        }
     }
 
     // 更新界面：显示盒子名称、剩余数量、背包列表
@@ -65,6 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 抽卡逻辑（不放回）
     function drawOne() {
+        // 预算扣减（可为负）
+        remainingBudget -= 25;
+        updateBudgetDisplay();
+
+        // 如果预算为负，给出提示（不影响抽卡）
+        if (remainingBudget < 0) {
+            alert('先吃饭后吃谷！');
+        }
         // 计算可抽物品：在总物品中但不在已抽列表中的
         const available = currentBox.items.filter(item => !drawnItems.includes(item));
         if (available.length === 0) {
