@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const budgetSpan = document.getElementById('budget-amount');      // 预算显示（暂未使用）
 
     // 状态变量
-    let currentBoxId = 'box49';                  // 当前选中的盒子ID
+    // 状态变量
+    let currentBoxId = BOXES[0]?.id;                    // 取第一个盒子的 id
     let currentBox = BOXES.find(b => b.id === currentBoxId); // 当前盒子对象
     let drawnItems = [];                         // 当前盒子已抽到的物品列表
 
