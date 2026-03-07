@@ -238,3 +238,119 @@ button {
         color: #ffffff;
         background: #222222;
     }
+
+/* 视图切换 */
+.view {
+    width: 100%;
+}
+
+/* 网格容器：用于放置方块 */
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+/* 盒子方块（选盒界面） */
+.box-tile {
+    width: calc(33.33% - 7px); /* 一行三个 */
+    aspect-ratio: 1 / 1; /* 正方形 */
+    background-color: #4a9eff; /* 默认颜色，会被JS内联覆盖 */
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start; /* 左上角 */
+    justify-content: flex-start;
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    cursor: pointer;
+    transition: 0.2s;
+    box-sizing: border-box;
+}
+
+    .box-tile:hover {
+        transform: scale(1.05);
+        border-color: #4a9eff;
+    }
+
+/* 抽盒小方块（14个） */
+.item-tile {
+    width: calc(14.28% - 9px); /* 一行7个，留出间隙 */
+    aspect-ratio: 3 / 1; /* 长宽比3:1 */
+    background-color: #4a9eff; /* 实心状态颜色 */
+    border: 2px solid #ffffff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s;
+    position: relative;
+}
+
+    .item-tile.drawn {
+        background-color: transparent; /* 空心 */
+        border: 2px dashed #4a9eff; /* 虚线边框 */
+        opacity: 0.8;
+    }
+
+    .item-tile:not(.drawn):hover {
+        transform: scale(1.05);
+        border-color: #ffd700;
+    }
+    /* 撕拉虚线装饰 */
+    .item-tile::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        right: 2px;
+        bottom: 2px;
+        border: 1px dashed rgba(255,255,255,0.3);
+        pointer-events: none;
+        border-radius: 2px;
+    }
+
+    .item-tile.drawn::before {
+        border-color: #4a9eff;
+    }
+
+/* 抽盒视图头部 */
+.detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.back-btn {
+    background: transparent;
+    border: 1px solid #4a9eff;
+    color: #4a9eff;
+    font-size: 20px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+    .back-btn:hover {
+        background: #4a9eff;
+        color: black;
+    }
+
+.detail-box-name {
+    font-size: 1.2rem;
+    color: #4a9eff;
+}
+
+/* 预算警告文字 */
+.warning-text {
+    color: #ff6666;
+    font-size: 14px;
+    margin-top: 5px;
+    min-height: 20px;
+}
+
+/* 调整按钮区域 */
+.action-area {
+    margin-top: 20px;
+}
