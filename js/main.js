@@ -19,8 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentBoxId = BOXES[0]?.id;
     let currentBox = BOXES.find(b => b.id === currentBoxId);
     let drawnItems = [];                         // 当前盒已抽列表
-    // 加载全局背包
-    loadGlobalBackpack();                      // 当前盒子已抽到的物品列表
     
     // 获取预算页面元素
     const budgetPage = document.getElementById('budget-page');
@@ -51,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初始化函数：填充下拉框并设置当前盒子
     function init() {
+        boxSelect.innerHTML = '';
+        // 清空防止重复调用
+
         // 填充下拉选项
         BOXES.forEach(box => {
             const option = document.createElement('option');
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         drawnItems.push(drawnItem);
         // 加入全局背包
         globalBackpack.push(drawnItem);
-        saveGlobalBackpack();
+        saveBackpack(globalBackpack);
         // 保存到 localStorage
         saveDrawn(currentBoxId, drawnItems);
         // 更新界面
