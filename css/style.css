@@ -1,0 +1,148 @@
+/* 全局样式 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #1a1a2e;
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.page {
+    width: 100%;
+    max-width: 1200px;
+    background: #16213e;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    gap: 30px;
+}
+
+/* 左右面板 */
+.left-panel {
+    flex: 1;
+    border-right: 1px solid #0f3460;
+    padding-right: 30px;
+}
+
+.right-panel {
+    flex: 1;
+    padding-left: 10px;
+}
+
+/* 标题 */
+h1, h2 {
+    color: #e94560;
+    margin-bottom: 20px;
+}
+
+/* 盒选择器 */
+.box-selector {
+    margin-bottom: 20px;
+}
+
+    .box-selector select {
+        background: #0f3460;
+        color: white;
+        border: 1px solid #e94560;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+/* 盒信息 */
+.box-info p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.box-info span {
+    font-weight: bold;
+    color: #e94560;
+}
+
+/* 按钮 */
+button {
+    background: #e94560;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 10px 10px 10px 0;
+    border: 1px solid transparent;
+}
+
+    button:hover {
+        background: #ff6b8b;
+        transform: scale(1.05);
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+
+#new-box-btn {
+    background: #0f3460;
+}
+
+    #new-box-btn:hover {
+        background: #1a4a7a;
+    }
+
+/* 预算显示 */
+.budget-info {
+    margin-top: 20px;
+    font-size: 20px;
+    background: #0f3460;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+#budget-amount {
+    font-weight: bold;
+    color: #00d4ff;
+}
+
+/* 背包容器 */
+#drawn-container {
+    background: #0f3460;
+    border-radius: 15px;
+    padding: 20px;
+    min-height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-content: flex-start;
+}
+
+/* 通行证卡片（后续JS动态添加时会用到这个类） */
+.pass-card {
+    background: #16213e;
+    border: 2px solid #e94560;
+    border-radius: 10px;
+    padding: 10px;
+    width: calc(20% - 8px);
+    text-align: center;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: 0.2s;
+}
+
+    .pass-card:hover {
+        transform: translateY(-5px);
+        border-color: #ff6b8b;
+    }

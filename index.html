@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>明日方舟通行证抽盒模拟器</title>
+    <!-- 引入 CSS 样式文件（稍后创建） -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 预算输入页面（第一阶段先隐藏，稍后实现）
+    <div id="budget-page" class="page">
+        <h1>欢迎来到通行证商店</h1>
+        <p>您今天的预算是？</p>
+        <input type="number" id="budget-input" placeholder="输入预算" min="0">
+        <button id="enter-shop">进入商店</button>
+    </div>
+    -->
+    <!-- 主界面（商店页面） -->
+    <div id="shop-page" class="page">
+        <!-- 左侧区域：盒选择和抽卡 -->
+        <div class="left-panel">
+            <h1>📦 通行证抽盒</h1>
+
+            <!-- 盒选择器（以后扩展多盒） -->
+            <div class="box-selector">
+                <label for="box-select">选择盒：</label>
+                <select id="box-select">
+                    <option value="box1">#49</option>
+                    <!-- 后续盒会动态添加 -->
+                </select>
+            </div>
+
+            <!-- 当前盒信息 -->
+            <div class="box-info">
+                <p>当前盒：<span id="box-name">#49</span></p>
+                <p>剩余数量：<span id="remaining-count">14</span> / 14</p>
+            </div>
+
+            <!-- 抽卡按钮 -->
+            <button id="draw-btn">抽一个 (消耗25)</button>
+
+            <!-- 重置按钮：重置抽新盒但已抽不清空 -->
+            <button id="new-box-btn">🔄 开新盒</button>
+
+            <!-- 预算显示 -->
+            <div class="budget-info">
+                剩余预算：<span id="budget-amount">0</span>
+            </div>
+        </div>
+
+        <!-- 右侧背包区域 -->
+        <div class="right-panel">
+            <h2>🎒 我的背包</h2>
+            <div id="drawn-container">
+                <!-- 已抽到的通行证会以卡片形式显示在这里 -->
+                <p>暂无通行证</p>
+            </div>
+        </div>
+    </div>
+
+<!-- 引入 JavaScript 文件 -->
+<script src="js/config.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
