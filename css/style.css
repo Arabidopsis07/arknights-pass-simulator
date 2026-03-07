@@ -214,7 +214,7 @@ button {
 
 /* 选盒界面的盒子方块 */
 .box-tile {
-    width: calc(20% - 7px);
+    width: calc(30% - 7px);
     aspect-ratio: 1 / 1; /* 正方形 */
     background-color: #4a9eff; /* 默认颜色，会被JS内联覆盖 */
     border: 2px solid #ffffff;
@@ -229,7 +229,7 @@ button {
     cursor: pointer;
     transition: 0.2s;
     box-sizing: border-box;
-    font-size: 2.5rem; /* 固定字号 */
+    font-size: 2.0rem; /* 固定字号 */
     line-height: 1; /* 防止多行文字撑高 */
     padding: 10px; /* 增加内边距让文字更靠边（左上角） */
     word-break: keep-all; /* 防止中文换行 */
