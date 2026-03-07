@@ -10,14 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const drawnContainer = document.getElementById('drawn-container');// 背包容器
     const budgetSpan = document.getElementById('budget-amount');      // 预算显示
 
+    // 全局背包：存储所有抽到的物品（永久保存）
+    let globalBackpack = loadBackpack() || [];   // 从 localStorage 加载
     // 预算相关变量
     let totalBudget = 0;        // 输入的初始预算
     let remainingBudget = 0;    // 剩余预算
     // 状态变量
-    let currentBoxId = BOXES[0]?.id;                    // 取第一个盒子的 id
-    let currentBox = BOXES.find(b => b.id === currentBoxId); // 当前盒子对象
-    let drawnItems = [];                         // 当前盒子已抽到的物品列表
-
+    let currentBoxId = BOXES[0]?.id;
+    let currentBox = BOXES.find(b => b.id === currentBoxId);
+    let drawnItems = [];                         // 当前盒已抽列表
+    // 加载全局背包
+    loadGlobalBackpack();                      // 当前盒子已抽到的物品列表
+    
     // 获取预算页面元素
     const budgetPage = document.getElementById('budget-page');
     const shopPage = document.getElementById('shop-page');
@@ -41,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 更新预算显示
         updateBudgetDisplay();
 
-        // 初始化商店数据（如果尚未初始化）
+        // 初始化商店数据
         if (typeof init === 'function') init();
     });
 
@@ -58,8 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
         switchBox(currentBoxId);
     }
 
-    // 切换盒子的函数（后续多盒扩展用）
+    // 切换盒子的函数
     function switchBox(boxId) {
+        console.log('切换到盒子 ID:', boxId);
+        console.log('找到的盒子:', BOXES.find(b => b.id === boxId));
         currentBoxId = boxId;
         currentBox = BOXES.find(b => b.id === boxId);
         // 加载该盒子的已抽记录
@@ -89,14 +95,22 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDrawnItems();
     }
 
-    // 渲染已抽物品到背包容器（生成卡片）
+    // 保存/加载背包函数
+    function saveBackpack(backpack) {
+        localStorage.setItem('globalBackpack', JSON.stringify(backpack));
+    }
+    function loadBackpack() {
+        const saved = localStorage.getItem('globalBackpack');
+        return saved ? JSON.parse(saved) : [];
+    }
+
+    // 渲染已抽物品到背包
     function renderDrawnItems() {
-        if (drawnItems.length === 0) {
+        if (globalBackpack.length === 0) {
             drawnContainer.innerHTML = '<p>暂无通行证</p>';
             return;
         }
-        // 用 map 生成卡片 HTML
-        const cardsHTML = drawnItems.map(item =>
+        const cardsHTML = globalBackpack.map(item =>
             `<div class="pass-card">${item}</div>`
         ).join('');
         drawnContainer.innerHTML = cardsHTML;
@@ -123,6 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const drawnItem = available[randomIndex];
         // 加入已抽列表
         drawnItems.push(drawnItem);
+        // 加入全局背包
+        globalBackpack.push(drawnItem);
+        saveGlobalBackpack();
         // 保存到 localStorage
         saveDrawn(currentBoxId, drawnItems);
         // 更新界面
