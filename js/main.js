@@ -97,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tile.className = 'item-tile';
             tile.dataset.index = i;  // 记录盒子索引
 
-            // 根据是否已抽设置样式
-            if (drawnItems.includes(i)) {
+            // 根据盒是否已抽设置样式
+            if (clickedTiles.includes(i)) {
                 tile.classList.add('drawn');
                 tile.style.borderColor = currentBox.themeColor || '#00bfff';
             } else {
