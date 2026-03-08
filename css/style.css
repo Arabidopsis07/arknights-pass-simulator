@@ -300,7 +300,7 @@ button {
         background: repeating-linear-gradient( 
             to right, 
             transparent 0px, 
-            transparent 2px，
+            transparent 2px,
             rgba(255,255,255,0.6) 2px, 
             rgba(255,255,255,0.6) 8px, 
             transparent 8px, 
@@ -309,7 +309,7 @@ button {
                     repeating-linear-gradient(
             to right, 
             transparent 0px, 
-            transparent 2px，
+            transparent 2px,
             rgba(255,255,255,0.6) 2px, 
             rgba(255,255,255,0.6) 8px, 
             transparent 8px,
