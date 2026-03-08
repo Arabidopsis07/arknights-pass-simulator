@@ -13,7 +13,7 @@
         <h1>欢迎来到通行证商店</h1>
         <p>您今天的预算是？</p>
         <input type="number" id="budget-input" placeholder="输入预算" min="0" value="100">
-        <button id="enter-shop">进入商店</button>
+        <button id="enter-shop">开始读博</button>
     </div>
 
     <!-- 主界面（商店页面），初始隐藏 -->
@@ -55,11 +55,14 @@
         <!-- 右侧背包区域 -->
         <div class="right-panel">
             <h2>我的背包</h2>
+            <!-- 一键清空背包 -->
+            <button id="clear-backpack-btn" style="margin-bottom: 10px;">放生所有通行证</button>
+            <!-- 已抽到的通行证会以卡片形式显示在这里 -->
             <div id="drawn-container">
-                <!-- 已抽到的通行证会以卡片形式显示在这里 -->
-                <p>暂无通行证</p>
+                <p>什么也没有</p>
             </div>
         </div>
+
     </div>
 
     <!-- 引入 JavaScript 文件 -->

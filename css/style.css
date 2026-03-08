@@ -24,7 +24,7 @@ body {
     width: 100%;
     max-width: 1200px;
     background-color: #0a0a0a;
-    border: 1px solid #4a9eff;
+    border: 1px solid #00bfff;
     padding: 30px;
     display: none; /* 默认隐藏，由JS控制显示哪个页面 */
 }
@@ -43,7 +43,7 @@ body {
         margin-bottom: 2rem;
         font-weight: 300;
         color: #ffffff;
-        border-bottom: 1px solid #4a9eff;
+        border-bottom: 1px solid #00bfff;
         padding-bottom: 1rem;
     }
 
@@ -57,7 +57,7 @@ body {
         width: 300px;
         padding: 12px;
         background: #111111;
-        border: 1px solid #4a9eff;
+        border: 1px solid #00bfff;
         color: white;
         font-size: 1.2rem;
         font-family: inherit;
@@ -74,8 +74,8 @@ body {
 
     #budget-page button {
         background: transparent;
-        color: #4a9eff;
-        border: 1px solid #4a9eff;
+        color: #00bfff;
+        border: 1px solid #00bfff;
         padding: 12px 40px;
         font-size: 1.2rem;
         font-family: inherit;
@@ -85,7 +85,7 @@ body {
     }
 
         #budget-page button:hover {
-            background: #4a9eff;
+            background: #00bfff;
             color: #000000;
         }
 
@@ -115,15 +115,15 @@ h1, h2 {
 }
 
 h2 {
-    border-left: 3px solid #4a9eff;
+    border-left: 3px solid #00bfff;
     padding-left: 10px;
 }
 
 /* 按钮通用样式 */
 button {
     background: transparent;
-    color: #4a9eff;
-    border: 1px solid #4a9eff;
+    color: #00bfff;
+    border: 1px solid #00bfff;
     padding: 10px 20px;
     font-size: 16px;
     font-family: inherit;
@@ -135,7 +135,7 @@ button {
 }
 
     button:hover {
-        background: #4a9eff;
+        background: #00bfff;
         color: #000000;
     }
 
@@ -159,7 +159,7 @@ button {
 }
 
 #budget-amount {
-    color: #4a9eff;
+    color: #00bfff;
     font-weight: 400;
     margin-left: 5px;
 }
@@ -184,7 +184,7 @@ button {
 /* 背包卡片 */
 .pass-card {
     background: #1a1a1a;
-    border: 1px solid #4a9eff;
+    border: 1px solid #00bfff;
     padding: 8px;
     width: calc(20% - 7px);
     text-align: center;
@@ -197,6 +197,18 @@ button {
         border-color: #66ccff;
         color: #ffffff;
         background: #222222;
+    }
+
+/* 清空背包按钮 */
+#clear-backpack-btn {
+    border-color: #ff6666; /* 红色边框表示清空操作 */
+    color: #ff6666;
+    margin-bottom: 10px;
+}
+
+    #clear-backpack-btn:hover {
+        background: #ff6666;
+        color: black;
     }
 
 /* 视图容器（选盒视图和抽盒视图） */
@@ -216,7 +228,7 @@ button {
 .box-tile {
     width: calc(30% - 7px);
     aspect-ratio: 1 / 1; /* 正方形 */
-    background-color: #4a9eff; /* 默认颜色，会被JS内联覆盖 */
+    background-color: #00bfff; /* 默认颜色，会被JS内联覆盖 */
     border: 2px solid #ffffff;
     border-radius: 8px;
     display: flex;
@@ -237,14 +249,14 @@ button {
 
     .box-tile:hover {
         transform: scale(1.05);
-        border-color: #4a9eff;
+        border-color: #00bfff;
     }
 
 /* 抽盒界面的小方块（常规14个） */
 .item-tile {
-    width: calc(14.28% - 9px); /* 一行7个，留出间隙 */
+    width: calc(50% - 5px); /* 一行2个 */
     aspect-ratio: 3 / 1; /* 长宽比3:1 */
-    background-color: #4a9eff; /* 实心状态颜色 */
+    background-color: #00bfff; /* 实心状态颜色 */
     border: 2px solid #ffffff;
     border-radius: 4px;
     cursor: pointer;
@@ -255,7 +267,7 @@ button {
     /* 已抽小方块：空心虚线 */
     .item-tile.drawn {
         background-color: transparent;
-        border: 2px dashed #4a9eff;
+        border: 2px dashed #00bfff;
         opacity: 0.8;
     }
 
@@ -265,7 +277,7 @@ button {
         border-color: #ffd700;
     }
 
-    /* 撕拉虚线装饰（模拟通行证表面花纹） */
+    /* 撕拉虚线装饰 */
     .item-tile::before {
         content: '';
         position: absolute;
@@ -279,7 +291,7 @@ button {
     }
 
     .item-tile.drawn::before {
-        border-color: #4a9eff;
+        border-color: #00bfff;
     }
 
 /* 抽盒视图头部（返回按钮+盒名） */
@@ -292,21 +304,21 @@ button {
 
 .back-btn {
     background: transparent;
-    border: 1px solid #4a9eff;
-    color: #4a9eff;
+    border: 1px solid #00bfff;
+    color: #00bfff;
     font-size: 20px;
     padding: 5px 15px;
     cursor: pointer;
 }
 
     .back-btn:hover {
-        background: #4a9eff;
+        background: #00bfff;
         color: black;
     }
 
 .detail-box-name {
     font-size: 1.2rem;
-    color: #4a9eff;
+    color: #00bfff;
 }
 
 /* 预算警告文字 */
