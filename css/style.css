@@ -299,18 +299,22 @@ button {
         height: 100%;
         background: repeating-linear-gradient( 
             to right, 
-            rgba(255,255,255,0.6) 0px, 
-            rgba(255,255,255,0.6) 7px, 
-            transparent 7px, 
+            transparent 0px, 
+            transparent 2px
+            rgba(255,255,255,0.6) 2px, 
+            rgba(255,255,255,0.6) 8px, 
+            transparent 8px, 
             transparent 10px
-          ) 0 40% / 100% 2px no-repeat,
+          ) 0 40% / 100% 1.5px no-repeat,
                     repeating-linear-gradient(
             to right, 
-            rgba(255,255,255,0.6) 0px, 
-            rgba(255,255,255,0.6) 7px, 
-            transparent 7px,
+            transparent 0px, 
+            transparent 2px
+            rgba(255,255,255,0.6) 2px, 
+            rgba(255,255,255,0.6) 8px, 
+            transparent 8px,
             transparent 10px 
-          ) 0 55% / 100% 2px no-repeat;
+          ) 0 55% / 100% 1.5px no-repeat;
         pointer-events: none;
     }
 
@@ -355,7 +359,7 @@ button {
 }
 
 /* 不同尺寸屏幕适配 */
-/* 手机和平板 */
+/* 平板 */
 @media (max-width: 768px) {
     #shop-page {
         flex-direction: column; /* 左右变上下 */
@@ -369,7 +373,7 @@ button {
     }
     /* 选盒方块 */
     .box-tile {
-        width: calc(50% - 7px);
+        width: calc(33.33% - 7px);
         font-size: min(5vw, 2rem);
     }
     /* 抽盒小方块 */
@@ -387,10 +391,10 @@ button {
     }
 }
 
-/* 小屏手机 */
+/* 手机 */
 @media (max-width: 480px) {
     .box-tile {
-        width: calc(100% - 0px);
+        width: calc(33% - 7px);
     }
 
     .item-tile {

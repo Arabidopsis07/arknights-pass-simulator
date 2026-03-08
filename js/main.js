@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let remainingBudget = 0;
     let currentBoxId = BOXES[0]?.id;
     let currentBox = BOXES.find(b => b.id === currentBoxId);
-    let drawnItems = [];   // 当前盒已抽列表
+    let drawnItems = [];   // 当前盒已抽物品索引
+    let clickedTiles = [];    // 已点方块索引
 
     // 初始化预算页面进入商店
     enterShopBtn.addEventListener('click', () => {
@@ -78,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchToBox(boxId) {
         currentBoxId = boxId;
         currentBox = BOXES.find(b => b.id === boxId);
-        drawnItems = loadDrawn(boxId) || [];  // 加载索引数组
+        drawnItems = loadItemDrawn(boxId) || [];      // 已抽物品索引
+        clickedTiles = loadTileDrawn(boxId) || [];    // 已点盒子索引
         detailBoxName.textContent = currentBox.name;
         detailBoxName.style.color = currentBox.themeColor || '#00bfff';
         renderItemGrid();
@@ -93,19 +95,19 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < currentBox.items.length; i++) {
             const tile = document.createElement('div');
             tile.className = 'item-tile';
-            tile.dataset.index = i;  // 记录索引
+            tile.dataset.index = i;  // 记录盒子索引
 
-            // 根据是否已抽设置样式（drawnItems 存索引数组）
+            // 根据是否已抽设置样式
             if (drawnItems.includes(i)) {
                 tile.classList.add('drawn');
-                tile.style.border = currentBox.themeColor || '#00bfff';
+                tile.style.borderColor = currentBox.themeColor || '#00bfff';
             } else {
                 tile.style.backgroundColor = currentBox.themeColor || '#00bfff';
             }
 
             tile.addEventListener('click', (e) => {
-                if (!tile.classList.contains('drawn')) {
-                    drawOne(tile);  // 传入被点击的方块元素
+                if (!clickedTiles.includes(i)) {
+                    drawOne(tile);  // 传入被点击的盒子
                 }
             });
             itemGrid.appendChild(tile);
@@ -124,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
             budgetWarning.textContent = '';
         }
 
+        const clickedIndex = parseInt(clickedTile.dataset.index);
+
         // 找出当前盒子中未抽的物品（按索引）
         const availableIndices = [];
         for (let i = 0; i < currentBox.items.length; i++) {
@@ -132,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         if (availableIndices.length === 0) {
-            alert('这盒已经集齐啦！');
+            alert('这盒已经抽完啦！');
             return;
         }
 
@@ -140,27 +144,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
         const drawnItem = currentBox.items[randomIndex];
 
-        // 被点击的盒子索引与随机索引不同，只标记被点击的为已抽
-        const clickedIndex = parseInt(clickedTile.dataset.index);
-        if (!drawnItems.includes(clickedIndex)) {
-            drawnItems.push(clickedIndex);
+        // 标记已抽物品
+        if (!drawnItems.includes(randomIndex)) {
+            drawnItems.push(randomIndex);
+        }
+        // 标记已点方块
+        if (!clickedTiles.includes(clickedIndex)) {
+            clickedTiles.push(clickedIndex);
         }
 
-        // 将抽到的物品加入全局背包
-        globalBackpack.push(drawnItem);
+        // 保存两个状态
+        saveItemDrawn(currentBoxId, drawnItems);
+        saveTileDrawn(currentBoxId, clickedTiles);
 
-        // 保存
-        saveDrawn(currentBoxId, drawnItems);
+        // 更新全局背包
+        globalBackpack.push(drawnItem);
         saveBackpack(globalBackpack);
 
         // 更新UI
         clickedTile.classList.add('drawn');
         clickedTile.style.backgroundColor = '';
+        clickedTile.style.borderColor = currentBox.themeColor || '#00bfff';
 
-        // 重新渲染背包（全局背包已更新）
+        // 重新渲染背包
         renderBackpack();
 
-        // 显示抽卡弹窗
         showToast(`你抽到了：${drawnItem}`);
     }
 
@@ -199,7 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetCurrentBox() {
         if (confirm('还要继续读博吗🥺')) {
             drawnItems = [];
+            clickedTiles = [];
             clearDrawn(currentBoxId);
+            localStorage.removeItem(`tileDrawn_${currentBoxId}`);
+            localStorage.removeItem(`itemDrawn_${currentBoxId}`);
             renderItemGrid();  // 重新渲染盒子（全部变实心）
         }
     }
