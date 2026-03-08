@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchToBox(boxId) {
         currentBoxId = boxId;
         currentBox = BOXES.find(b => b.id === boxId);
-        drawnItems = loadDrawn(boxId) || [];  // 加载该盒已抽记录
+        drawnItems = loadDrawn(boxId) || [];  // 加载索引数组
         detailBoxName.textContent = currentBox.name;
+        detailBoxName.style.color = currentBox.themeColor || '#00bfff';
         renderItemGrid();
         showBoxDetailView();
     }
@@ -89,23 +90,22 @@ document.addEventListener('DOMContentLoaded', () => {
         itemGrid.innerHTML = '';
         if (!currentBox) return;
 
-        // 生成盒子（根据items数量）
         for (let i = 0; i < currentBox.items.length; i++) {
-            const itemName = currentBox.items[i];
             const tile = document.createElement('div');
             tile.className = 'item-tile';
-            // 根据是否已抽设置样式
-            if (drawnItems.includes(itemName)) {
+            tile.dataset.index = i;  // 记录索引
+
+            // 根据是否已抽设置样式（drawnItems 存索引数组）
+            if (drawnItems.includes(i)) {
                 tile.classList.add('drawn');
+                tile.style.border = currentBox.themeColor || '#00bfff';
             } else {
                 tile.style.backgroundColor = currentBox.themeColor || '#00bfff';
             }
-            tile.dataset.item = itemName;
-            tile.dataset.index = i;
+
             tile.addEventListener('click', (e) => {
-                // 只有未抽的盒子才触发抽卡
                 if (!tile.classList.contains('drawn')) {
-                    drawOne();
+                    drawOne(tile);  // 传入被点击的方块元素
                 }
             });
             itemGrid.appendChild(tile);
@@ -113,38 +113,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     //抽卡逻辑（随机不放回）
-    function drawOne() {
+    function drawOne(clickedTile) {
         // 预算扣减
         remainingBudget -= 25;
         updateBudgetDisplay();
 
-        // 检查预算并显示警告
         if (remainingBudget < 0) {
             budgetWarning.textContent = '先吃饭后吃谷！';
         } else {
             budgetWarning.textContent = '';
         }
 
-        // 找出当前盒子中未抽的物品
-        const available = currentBox.items.filter(item => !drawnItems.includes(item));
-        if (available.length === 0) {
+        // 找出当前盒子中未抽的物品（按索引）
+        const availableIndices = [];
+        for (let i = 0; i < currentBox.items.length; i++) {
+            if (!drawnItems.includes(i)) {
+                availableIndices.push(i);
+            }
+        }
+        if (availableIndices.length === 0) {
             alert('这盒已经集齐啦！');
             return;
         }
-        // 随机选择一个
-        const randomIndex = Math.floor(Math.random() * available.length);
-        const drawnItem = available[randomIndex];
 
-        // 将该物品加入已抽列表和全局背包
-        drawnItems.push(drawnItem);
+        // 随机选择一个索引
+        const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        const drawnItem = currentBox.items[randomIndex];
+
+        // 被点击的盒子索引与随机索引不同，只标记被点击的为已抽
+        const clickedIndex = parseInt(clickedTile.dataset.index);
+        if (!drawnItems.includes(clickedIndex)) {
+            drawnItems.push(clickedIndex);
+        }
+
+        // 将抽到的物品加入全局背包
         globalBackpack.push(drawnItem);
 
         // 保存
         saveDrawn(currentBoxId, drawnItems);
         saveBackpack(globalBackpack);
 
-        // 更新UI：重新渲染小盒子（更新空心状态）和背包
-        renderItemGrid();
+        // 更新UI
+        clickedTile.classList.add('drawn');
+        clickedTile.style.backgroundColor = '';
+
+        // 重新渲染背包（全局背包已更新）
         renderBackpack();
 
         // 显示抽卡弹窗
@@ -187,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('还要继续读博吗🥺')) {
             drawnItems = [];
             clearDrawn(currentBoxId);
-            renderItemGrid();  // 重新渲染小盒子（全部变实心）
+            renderItemGrid();  // 重新渲染盒子（全部变实心）
         }
     }
 
